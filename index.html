@@ -1,0 +1,1788 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Praktický tréning IT bezpečnosti</title>
+  <meta name="description" content="Praktický tréning IT bezpečnosti">
+  <meta name="author" content="Miroslav Svítok">
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;900" rel="stylesheet">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+</head>
+
+<body>
+
+  <!-- STEP-0  -->
+  <script>
+    function step0() {
+      return {
+        name: "",
+        email: "",
+        initState() {
+          this.$store.quiz.name = this.name;
+          this.$store.quiz.email = this.email;
+          this.$store.quiz.step += 1;
+        }
+      }
+    }
+
+  </script>
+  <section x-data="step0()" x-show="$store.quiz.step == 0" id="step0" class="gentle-flex container relative">
+    </div>
+    <div class="intro-box">
+      <section class="motto-wrapper">
+        <div id="logo">
+          <i class="fa fa-warning"></i>
+        </div>
+        <h1>
+          <!-- bezpečnosť.click:<br /> -->
+          Myslíš že teba by internetoví hackeri<br /><span class="aqua">nenachytali?</span>
+        </h1>
+      </section>
+      
+      <p class="text-larger">
+        Identifikovať <abbr title="TODO: vysvetlit co je phishing">phishing</abbr> alebo inú formu internetového podvodu môže byť ťažšie ako si myslíš.
+        Skús preto tento malý kvíz a <span class="white">over si či uspeješ</span>.
+      </p>
+      <hr style="border-top: 1px solid rgb(238, 238, 238);" />
+
+      <p class="text-larger">
+        Na začiatku ešte jedna drobnosť, zadaj prosím svoje meno a email. Nemusíš sa báť, tieto údaje neopustia tvoj počítač - slúžia na to aby bol test čo najvernejší.
+      </p>
+      </p>
+      <div>
+        <label class="basic-label">Meno: </label>
+        <input class="basic-input" type="text" x-model="name">
+      </div>  
+      <div style="margin-top: 20px;">
+        <label class="basic-label">E-mail: </label>
+        <input class="basic-input" type="email" x-model="email">
+      </div>
+      <div style="margin-top: 20px;">
+        <a class="response-button run-quiz-button" @click="initState" href="#">Spustiť kvíz</a>
+      
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP-1 -->
+  <script>
+    function step1() {
+      return {
+        statusShow: false,
+        open: false,
+        guideStep: 'question',
+        explanation: 0,
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+        nextExplanation(num) {
+          this.explanation = num;
+        }
+      }
+    }
+
+  </script>
+  <section id="step1" x-data="step1()" x-show="$store.quiz.step==1" class="gentle-flex container relative">
+    <div id="step-counter">
+      1/9
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Phishing 1: začnime týmto emailom z Google Docs</h2>
+        <p>Označ či je tento email pravý alebo nie.</p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Pravý email</a>
+          <a class="response-button" @click="answer('correct', true)" href="#">Phishingový email</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='correct'">
+        <h2>Správne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+    </div>
+    <div class="main-box">
+      <div>
+        <div class="email-header" fromname="Patrik Kovac">
+          <div class="header">
+            <div class="header-container">
+              <div class="circle yellow"> P </div>
+              <div class="from-email-text">
+                <span class="name">Patrik Kováč</span><span class="email"> ‎&lt;patrik.kovac8000@gmail.com&gt;‎
+                </span><span class="to-me">komu: mne</span>
+                <div class="email-dropdown-arrow" @click="open=true">
+                  <div x-show="open" @click.away="open=false" class="modal" style="visibility: visible;">
+                    <div class="modal-flex">
+                      <div class="col-left">od:</div>
+                      <div class="col-right">Patrik Kováč ‎&lt;patrik.kovac8000@gmail.com&gt;</div>
+                    </div>
+
+                    <div class="modal-flex">
+                      <div class="col-left">komu:</div>
+                      <div class="col-right" x-text="$store.quiz.email"></div>
+                    </div>
+
+                    <div class="modal-flex">
+                      <div class="col-left">dátum:</div>
+                      <div class="col-right" x-text="$store.quiz.now"></div>
+                    </div>
+
+                    <div class="modal-flex">
+                      <div class="col-left">predmet:</div>
+                      <div class="col-right">Inzerat pridany</div>
+                    </div>
+                  </div>
+                </div>
+                <span class="details-link">details</span>
+              </div>
+              <div class="time">7:09 PM</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content content-gray">
+          <div class="card">
+            <div class="email-content">
+              <!-- <input type="hidden" value="http://drive--google.com/luke.johnson"> -->
+              <span class="line-1">Patrik Kováč s Vami zdieľal tento dokument:</span>
+              <div class="tour-step" style="position:relative">
+                <div class="doc-name" style="touch-action: none; user-select: none;" @mouseover="statusShow=true"
+                  @mouseleave="statusShow=false">
+                  2021 Rozpocet oddelenia.docx
+                </div>
+
+                <div x-show="explanation==1" class="modal" style="margin-left: 0; margin-top: 2px;">
+                  <div>Po ukázaní myšou na odkaz sa v ľavom dolnom rohu zobrazí adresa na ktorú odkaz smeruje. V tomto
+                    prípade je to nebezpečná doména “drive--google.com” (dve pomlčky), ktorá imituje pôvodnú Google
+                    Drive doménu.</div>
+                  <div class="tright">
+                    <a class="small-button" @click="$store.quiz.step += 1" href="#">Ďalší test</a>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="message-container">
+                <div class="user-icon"></div>
+                <div class="message">Posielam dokument ktorý som sľúbil. Daj mi prosím vedieť či potrebuješ ešte niečo
+                  ďalšie.</div>
+              </div>
+              <div class="drive-button" @mouseover="statusShow=true" @mouseleave="statusShow=false"
+                style="touch-action: none; user-select: none;">
+                Otvoriť v Google Docs
+              </div>
+              <div x-show="statusShow" class="status">http://drive--google.com/patrik.kovac</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP-2 -->
+  <script>
+    function step2() {
+      return {
+        showStatus: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        nextExplanation(num) {
+          this.explanation = num;
+        },
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+      }
+    }
+
+  </script>
+  <section id="step2" x-data="step2()" x-show="$store.quiz.step==2" class="gentle-flex container relative">
+    <div id="step-counter">
+      2/10
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Phishing 2: Email od starého známeho Maroša</h2>
+        <p>Označ či je tento email pravý alebo nie.</p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Pravý email</a>
+          <a class="response-button" @click="answer('correct', true)" href="#">Phishingový email</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='correct'">
+        <h2>Správne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-box">
+      <div class="content-card mat-elevation-z0 mat-card mat-focus-indicator ng-trigger ng-trigger-slideIn">
+        <div>
+          <div>
+            <div class="header">
+              <div class="header-container">
+                <div class="circle purple"> M </div>
+                <div class="from-email-text"><span class="name">Maroš</span><span class="email">
+                    &lrm;&lt;maros867530@gmail.com&gt;&lrm; </span><span class="to-me">pre mňa</span>
+
+                  <div class="email-dropdown-arrow" @click="openDetail=true">
+                    <div x-show="openDetail" @click.away="openDetail=false" class="modal" style="visibility: visible;">
+                      <div class="modal-flex">
+                        <div class="col-left">od:</div>
+                        <div class="col-right">Maroš &lrm;&lt;maros867530@gmail.com&gt;&lrm;</div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">komu:</div>
+                        <div class="col-right" x-text="$store.quiz.email"></div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">dátum:</div>
+                        <div class="col-right" x-text="$store.quiz.now"></div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">predmet:</div>
+                        <div class="col-right"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <span class="details-link">detaily</span>
+                </div>
+                <div class="time" x-text="$store.quiz.now"></div>
+              </div>
+            </div>
+          </div>
+
+          <div x-show="showStatus" class="status">https://drive.google.com.download-photo.sytez.net/AONh1e0hVP</div>
+
+          <div class="content" style="position: relative;">
+            Čaves <span x-text="$store.quiz.name"></span>, pamätáš si na túto
+            <span style="display: inline-block; position: relative;" @mouseover="showStatus=true"
+              @mouseleave="showStatus=false" class="fake-link">
+              fotku z koncoročnej chaty?
+            </span>
+            <div x-show="explanation==1" class="modal" style="margin-left: 200px; margin-top: 2px; width: 300px;">
+              <div>Odkaz v skutočnosti smeruje na "sytez.net", nie na doménu Google Drive, jedná sa o pokus o oklamanie
+                užívateľa.</div>
+              <div class="tright">
+                <a class="small-button" @click="$store.quiz.step += 1" href="#">Ďalší test</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- STEP-3 -->
+  <script>
+    function step3() {
+      return {
+        showStatus1: false,
+        showStatus2: false,
+        showStatus3: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        nextExplanation(num) {
+          this.explanation = num;
+        },
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+      }
+    }
+
+  </script>
+  <section id="step3" x-data="step3()" x-show="$store.quiz.step==3" class="gentle-flex container relative">
+    <div id="step-counter">
+      3/9
+    </div>
+
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Phishing 3: Dropbox ťa informuje že dochádza miesto</h2>
+        <p>Označ či je tento email pravý alebo nie.</p>
+        <div>
+          <a class="response-button" @click="answer('correct', true)" href="#">Pravý email</a>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Phishingový email</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='correct'">
+        <h2>Správne</h2>
+        <p>Tento email je v skutočnosti pravý.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne</h2>
+        <p>Tento email je v skutočnosti pravý.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-box">
+
+      <div class="content-card mat-elevation-z0 mat-card mat-focus-indicator ng-trigger ng-trigger-slideIn">
+        <card-body-content>
+          <div>
+            <div class="header">
+              <div class="header-container" style="position: relative;">
+                <div class="circle yellow"> D </div>
+                <div class="from-email-text"><span class="name">Dropbox</span><span class="email">
+                    &lrm;&lt;no-reply@dropboxmail.com&gt;&lrm; </span><span class="to-me">pre
+                    mňa</span>
+
+                  <div x-show="explanation==1" class="modal"
+                    style="word-wrap: break-word; margin-left: 0px; margin-top: 2px;">
+                    <div>Doména je síce netradične dropboxmail.com, ale nie je falošná (čo sa môže stávať). <br />
+                      Ak si nie si istý, zadaj doménu do prehliadača a presveďč sa čo je zač.</div>
+                    <div class="tright">
+                      <a class="small-button" @click="explanation=2">Ďalej</a>
+                    </div>
+                  </div>
+
+                  <div class="email-dropdown-arrow" @click="openDetail=true">
+                    <div x-show="openDetail" @click.away="openDetail=false" class="modal" style="visibility: visible;">
+                      <div class="modal-flex">
+                        <div class="col-left">od:</div>
+                        <div class="col-right">Dropbox &lrm;&lt;no-reply@dropboxmail.com&gt;&lrm;‎
+
+                        </div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">komu:</div>
+                        <div class="col-right" x-text="$store.quiz.email"></div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">dátum:</div>
+                        <div class="col-right" x-text="$store.quiz.now"></div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">predmet:</div>
+                        <div class="col-right">Your Dropbox has stopped syncing</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="time">7:08 PM</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="content">
+              <div class="message">
+                <div class="dropbox-icon"></div>
+                <div class="message-text">
+                  <p>Hi,</p>
+                  <p>Your Dropbox is full and is no longer syncing files. New files added to your
+                    Dropbox folder won't be accessible on your other devices and won't be backed up online.</p>
+                  <p>Upgrade your Dropbox today and get 1 TB (1,000 GB) of space and powerful
+                    sharing features.</p>
+                </div>
+                <div class="button-container">
+                  <div style="cursor: pointer;" class="dropbox-button" @mouseover="showStatus1=true"
+                    @mouseleave="showStatus1=false">
+                    Upgrade your Dropbox
+                  </div>
+                  <div x-show="explanation==2" class="modal"
+                    style="word-wrap: break-word; margin-left: 330px; margin-top: 2px;">
+                    <div>Odkaz na tlačítku smeruje na legitímnu a bezpečnú doménu "dropbox.com"</div>
+                    <div class="tright">
+                      <a class="small-button" @click="$store.quiz.step+=1" href="#">Ďalej</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="footer-text">
+                  <p>For other ways to get more space, visit our <span class="fake-link" @mouseover="showStatus2=true"
+                      @mouseleave="showStatus2=false">Get More Space</span> page.</p>
+                  <p>Happy Dropboxing!</p>
+                  <p>- The Dropbox Team</p>
+
+                  <p>P.S. If you need the biggest plan we've got, check out <span class="fake-link"
+                      @mouseover="showStatus3=true" @mouseleave="showStatus3=false">Dropbox for Business</span>.</p>
+
+                  <div x-show="showStatus1" class="status">https://www.dropbox.com/buy</div>
+                  <div x-show="showStatus2" class="status">https://www.dropbox.com/help/space/get-more-space</div>
+                  <div x-show="showStatus3" class="status">https://www.dropbox.com/business</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </card-body-content>
+      </div>
+
+
+    </div>
+  </section>
+  <!-- !STEP-3 -->
+
+  <!-- STEP-4 -->
+  <script>
+    function step4() {
+      return {
+        showStatus1: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+      }
+    }
+
+  </script>
+  <section id="step4" x-data="step4()" x-show="$store.quiz.step==4" class="gentle-flex container relative">
+    <div id="step-counter">
+      4/9
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Phishing 4: Píše ti šéf</h2>
+        <p>Šéfová adresa je <span style="text-decoration: underline;">milan@bestconsulting.com</span>. Označ či je tento
+          email pravý alebo nie. </b></p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Pravý email</a>
+          <a class="response-button" @click="answer('correct', true)" href="#">Phishingový email</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='correct'">
+        <h2>Správne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="explanation=1" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="explanation=1" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-box">
+
+      <div class="content-card">
+        <card-body-content>
+          <div>
+            <div class="header">
+              <div class="header-container" style="position: relative;">
+                <div class="question-mark">
+                  <div x-show="explanation==1" class="modal"
+                    style="word-wrap: break-word; margin-left: 0px; margin-top: 60px;">
+                    <div style="width: 600px;">
+                      <p>
+                        Email síce prišiel zo správnej adresy, ale Google nás upozorňuje že odosielateľ nemohol byť
+                        overený.
+                      </p>
+                      <p>
+                        Tu sa treba mať na pozore, pretože email bol podvrhnutý - v skutočnosti ho neodoslal užívateľ
+                        <span style="text-decoration: underline;">milan@bestconsulting.com</span>,
+                        ale niekto kto sa tvári ako tento užívateľ.
+
+                        Bohužial email nie je celkom bezpečný kanál, emailový klient nevie na 100% overiť či je email
+                        pravý, preto nás upozorní aspoň takouto ikonkou otáznika (môže sa však líšiť od typu klienta).
+                      </p>
+
+                      <p>
+                        Tento konkrétny scenár sa v anglickej terminológii nazýva "CEO fraud" a je veľmi nebezpečný
+                        pretože vytvára zjavné finančné škody ak mu naletíme.
+                      </p>
+                    </div>
+
+                    <div class="tright">
+                      <a class="small-button" @click="explanation=2">Ďalej</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="hover-box" x-show="explanation==0">Službe GMail sa nepodarilo overiť, či je odosielateľom
+                  tejto správy doména bestconsulting.com (a nie šíriteľ spamu).</div>
+
+                <div class="from-email-text">
+                  <span class="name">Milan Karolyi</span>
+                  <span class="email">&lrm;&lt;milan@bestconsulting.com&gt;&lrm; </span>
+                  <span class="to-me">pre mňa</span>
+
+                  <div class="email-dropdown-arrow" @click="openDetail=true">
+                    <div x-show="openDetail" @click.away="openDetail=false" class="modal" style="visibility: visible;">
+                      <div class="modal-flex">
+                        <div class="col-left">od:</div>
+                        <div class="col-right">Milan Karolyi &lrm;&lt;milan@bestconsulting.com&gt;&lrm;‎</div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">komu:</div>
+                        <div class="col-right" x-text="$store.quiz.email"></div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">dátum:</div>
+                        <div class="col-right" x-text="$store.quiz.now"></div>
+                      </div>
+
+                      <div class="modal-flex">
+                        <div class="col-left">predmet:</div>
+                        <div class="col-right">Faktúra prosím uhradiť dnes</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="time">7:08 PM</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="content">
+              Ahoj, <span x-text="$store.quiz.name"></span><br />
+              <p>prosím ťa uhraď rýchlo túto faktúru, úplne som na to zabudol a včera bol dátum splatnosti.
+              </p>Ď. <br />Milan
+
+              <hr />
+
+              <div class="attachment">
+                <div class="attachment-default">
+                  <img alt="screenshot" src="./img/attachment-screenshot.jpg"><input type="hidden"
+                    value="2021 F.A.R.pdf">
+                  <div class="attachment-footer"><span class="pdf-icon">pdf</span><span class="file-name">2021
+                      Faktura.pdf</span></div>
+                </div>
+                <div class="attachment-hover">
+                  <span class="pdf-icon">pdf</span>
+                  <span class="file-name">2021 Faktura.pdf</span>
+                  <span class="file-size">149 KB</span>
+                </div>
+
+                <div x-show="explanation==2" class="modal"
+                  style="word-wrap: break-word; margin-top: 10px; margin-left: 0px;">
+                  <div style="width: 400px;">
+                    Buďte opatrní pri otváraní PDFiek, najma ak ich neočakávate. Ak ste si nie istý, overte si takúto
+                    správu ešte pomocou iného kanálu.
+                  </div>
+
+                  <div class="tright">
+                    <a class="small-button" @click="$store.quiz.step=5">Ďalej</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </card-body-content>
+      </div>
+    </div>
+  </section>
+  <!-- !STEP-4 -->
+
+  <!-- STEP-5 -->
+  <script>
+    function step5() {
+      return {
+        showStatus1: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        nextExplanation(num) {
+          if (num >= this.explanation) {
+            this.explanation = num;
+          }
+        },
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+      }
+    }
+
+  </script>
+  <section id="step5" x-data="step5()" x-show="$store.quiz.step==5" class="gentle-flex container relative">
+    <div id="step-counter">
+      5/9
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Phishing 5: Pokus o nelegálne prihlásenie do Google účtu</h2>
+        <p>Prišla ti výzva na zmenu hesla. Označ či je tento
+          email pravý alebo nie. </b></p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Pravý email</a>
+          <a class="response-button" @click="answer('correct', true)" href="#">Phishingový email</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='correct'">
+        <h2>Správne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne</h2>
+        <p>Tento email je v skutočnosti phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-box">
+      <div class="content-card">
+        <div>
+          <div>
+            <div class="header">
+              <div class="header-container">
+                <div class="circle green"> G </div>
+                <div class="from-email-text">
+                  <span class="name">Google</span><span class="email">
+                    &lrm;&lt;no-reply@google.support&gt;&lrm; </span><span class="to-me">pre mňa</span>
+
+                    <div class="email-dropdown-arrow" @click="openDetail=true">
+                      <div x-show="openDetail" @click.away="openDetail=false" class="modal" style="visibility: visible;">
+                        <div class="modal-flex">
+                          <div class="col-left">od:</div>
+                          <div class="col-right">Google &lrm;&lt;no-reply@google.support&gt;&lrm;‎
+                          </div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">komu:</div>
+                          <div class="col-right" x-text="$store.quiz.email"></div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">dátum:</div>
+                          <div class="col-right" x-text="$store.quiz.now"></div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">predmet:</div>
+                          <div class="col-right">Pokus o prihlásenie Vašim heslom</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div x-show="explanation==1" class="modal" style="width: 500px;">
+                      <div>Email vyzerá vierohodne, dôležité je si však všímnúť doménu - <span style="text-decoration: underline;">google.support</span> nie je valídna doména Googlu.</div>
+                      <div class="tright">
+                        <a class="small-button" @click="nextExplanation(2)" href="#">Ďalej</a>
+                      </div>
+                    </div>
+                </div>
+                <div class="time">4:59 PM</div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="email-header"> Pokus o prihlásenie Vašim heslom </div>
+            <div class="email-body">
+              <p class="message-text">Dobrý deň, <br>Niekto sa práve pokúsil prihlásiť do Google účtu pomocou Vašeho hesla.</p>
+              <div class="info"><span>Informácie o prihlásení:</span>
+                <span x-text="$store.quiz.now">Saturday, May 29, 2021 at 4:59:13 PM GMT+02:00</span><span
+                >Tel Aviv, Isreal</span><span>Firefox</span></div>
+              <p class="message-bottom-text">Google zastavil tento pokus o prihlásenie. Prosíme Vás o okamžitú zmenu hesla.</p>
+
+              <div style="position: relative;">
+                <span 
+                class="change-password-button"
+                @mouseover="showStatus1=true" @mouseleave="showStatus1=false">
+                ZMENIŤ HESLO</span>
+
+                <div x-show="explanation==2" class="modal" style="width: 500px;margin:0">
+                  <div>Odkaz smeruje na subdoménu <span style="text-decoration: underline;">ml-security.org</span>, nie na Google.</div>
+                  <div class="tright">
+                    <a class="small-button" @click="$store.quiz.step=6" href="#">Ďalej</a>
+                  </div>
+                </div>
+              </div>
+                
+              <div x-show="showStatus1" class="status">http://myaccount.google.com-securitysettingpage.ml-security.org/signonoptions/</div>
+
+              <p class="footer-text">S pozdravom, <br>Tým Google Mail</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- !STEP-5 -->
+
+  <!-- STEP-6 -->
+  <script>
+    function step6() {
+      return {
+        showStatus1: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        nextExplanation(num) {
+          if (num >= this.explanation) {
+            this.explanation = num;
+          }
+        },
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+      }
+    }
+  </script>
+  <section id="step6" x-data="step6()" x-show="$store.quiz.step==6" class="gentle-flex container relative">
+    <div id="step-counter">
+      6/9
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Phishing 6: Opať žiadosť o zmenu hesla</h2>
+        <p>Prišla ti varovanie od Googlu v angličtine. Označ či je tento
+          email pravý alebo nie. </b></p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Pravý email</a>
+          <a class="response-button" @click="answer('correct', true)" href="#">Phishingový email</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='correct'">
+        <h2>Správne</h2>
+        <p>Tento email je opäť phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne</h2>
+        <p>Tento email je opäť phishingový.</p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi prečo</a>
+        </div>
+      </div>
+    </div>
+    <div class="main-box">
+      <div class="content-card">
+        <div>
+          <div>
+            <div class="header">
+              <div class="header-container">
+                <div class="circle green"> G </div>
+                <div class="from-email-text">
+                  <span class="name">Google</span><span class="email">
+                    &lrm;&lt;no-reply@google.support&gt;&lrm; </span><span class="to-me">pre mňa</span>
+
+                    <div class="email-dropdown-arrow" @click="openDetail=true">
+                      <div x-show="openDetail" @click.away="openDetail=false" class="modal" style="visibility: visible;">
+                        <div class="modal-flex">
+                          <div class="col-left">od:</div>
+                          <div class="col-right">Google &lrm;&lt;no-reply@google.support&gt;&lrm;‎
+                          </div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">komu:</div>
+                          <div class="col-right" x-text="$store.quiz.email"></div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">dátum:</div>
+                          <div class="col-right" x-text="$store.quiz.now"></div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">predmet:</div>
+                          <div class="col-right">Government-backed attackers</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div x-show="explanation==1" class="modal" style="max-width: 500px;">
+                      <div>Ako aj v predchádzajúcom prípade nesedí doména - <span style="text-decoration: underline;">google.support</span></div>
+                      <div class="tright">
+                        <a class="small-button" @click="nextExplanation(2)" href="#">Ďalej</a>
+                      </div>
+                    </div>
+                </div>
+                <div class="time">4:59 PM</div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="email-body">
+              <div class="flag">alert</div>
+              <div class="email-headline">Government-backed attackers may be trying to steal your password</div>
+              <p>There's a chance this is a false alarm, but we believe we detected government-backed attackers trying to steal your password. This happens to less then 0.1% of all Gmail users. We can't reveal what tipped us off because the attackers will take note and change their tactics, but if they are successful at some point they could access your data or take other actions using your account. To further improve your security, based on your current settings, we recommend:</p>
+              <div style="position: relative;">
+                  <span class="material-fake-link" @mouseover="showStatus1=true" @mouseleave="showStatus1=false">
+                    Change password
+                  </span>
+                  
+                  <div x-show="explanation==2" class="modal" style="max-width: 500px; margin: 0;">
+                    <div>
+                      To je zložitejšie, ale odkaz je v skutočnosti presmerovaním na niečo na doméne <span style="text-decoration: underline;">tinyurl.com.</span>
+                      <br /><br />
+                      V prípade že vás niekto emailom vyzve na zmenu hesla (alebo inú citlivú akciu), je dôležité byť opatrný a sledovať na akej stránke sa ocitneme.
+                    </div>
+                    <div class="tright">
+                      <a class="small-button" @click="$store.quiz.step=7" href="#">Ďalej</a>
+                    </div>
+                  </div>
+              </div>
+              <div x-show="showStatus1" class="status">https://google.com/amp/tinyurl.com/y7u8ewlr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- !STEP-6 -->
+
+  <!-- STEP-7 -->
+  <script>
+    function step7() {
+      return {
+        showStatus1: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        nextExplanation(num) {
+          if (num >= this.explanation) {
+            this.explanation = num;
+          }
+        },
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+      }
+    }
+  </script>
+  <section id="step7" x-data="step7()" x-show="$store.quiz.step==7" class="gentle-flex container relative">
+    <div id="step-counter">
+      7/9
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>"Poslední upozornění"</h2>
+        <p>Prišli ti takéto varovanie. Čo urobíš?</b></p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Radšej zaplatím</a>
+          <a class="response-button" @click="answer('correct1', true)" href="#">Kontaktujem políciu</a>
+          <a class="response-button" @click="answer('correct2', true)" href="#">Email ignorujem</a>
+        </div>
+      </div>
+      <div x-show="guideStep=='correct1'">
+        <h2>Správne - email je falošný a nikdy naň nereagujte alebo neplaťťe.</h2>
+        <div class="tleft">
+          <p>Polícia Vám môže/nemusí pomôcť, vo väčšine prípadov však býva ťažké vypátrať odosielateľa, môže byť zo zahraničia.<br />
+            V zásade však platí:
+          </p>
+          <ul >
+            <li>nikomu nikdy nič neplatiť len preto, že o to požiada</li>
+            <li>nikdy neverte emailu, ktorý obsahuje vašu adresu, že niekto má prístup k vášmu emailu. Tento trik naozaj zvládne ktokoľvek skúsenejší.</li>
+            <li>nikdy nikomu len tak neveriť, koho nepoznáte a netušíte čo chce, najmä ak chce, aby ste mu verili</li>
+          </ul>
+        </div>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Vysvetli mi prečo</a>
+        </div>
+      </div>
+
+      <div x-show="guideStep=='correct2'">
+        <h2>Správne - email je falošný a nikdy naň nereagujte alebo neplaťťe.</h2>
+        <div class="tleft">
+          <p>V zásade platí:</p>
+          <ul >
+            <li>nikomu nikdy nič neplatiť len preto, že o to požiada</li>
+            <li>nikdy neverte emailu, ktorý obsahuje vašu adresu, že niekto má prístup k vášmu emailu. Tento trik naozaj zvládne ktokoľvek skúsenejší.</li>
+            <li>nikdy nikomu len tak neveriť, koho nepoznáte a netušíte čo chce, najmä ak chce, aby ste mu verili</li>
+          </ul>
+        </div>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Vysvetli mi prečo</a>
+        </div>
+      </div>
+
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne - email je falošný a bohužiaľ ste asi prišli o peniaze.</h2>
+        <div class="tleft">
+          <p>V zásade platí:</p>
+          <ul >
+            <li>nikomu nikdy nič neplatiť len preto, že o to požiada</li>
+            <li>nikdy neverte emailu, ktorý obsahuje vašu adresu, že niekto má prístup k vášmu emailu. Tento trik naozaj zvládne ktokoľvek skúsenejší.</li>
+            <li>nikdy nikomu len tak neveriť, koho nepoznáte a netušíte čo chce, najmä ak chce, aby ste mu verili</li>
+          </ul>
+        </div>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Vysvetli mi prečo</a>
+        </div>
+      </div>
+     
+    </div>
+    <div class="main-box">
+      <div class="content-card">
+        <div>
+          <div>
+            <div class="header">
+              <div class="header-container">
+                <div class="circle green"> G </div>
+                
+                <div class="from-email-text">
+                  <div x-show="explanation==1" class="modal" style="max-width: 500px; margin: 0; top: 30px;">
+                    <div>
+                      Tentoraz je to starý dobrý trik s vašou emailovou adresou. Čiže prijímateľ aj odosielateľ je tá istá adresa. Email tak vyzerá, akoby ste si ho poslali sami. 
+                      No odosielateľom nie je meno, aké sa objavuje zvyčajne, ale len adresa s viditeľným zavináčom. Trik s maskovaním adresy, aby vyzerala ako iná adresa je veľmi jednoduchý. Reálne ale nikto nemá prístup do vašej schránky a nikto sa vám nenabúral do počítača. 
+                      Stále je to len podvodný falošný email, ktorý pomerne ľahko zarobí nemalý obnos peňazí.
+                    </div>
+                    <div class="tright">
+                      <a class="small-button" @click="$store.quiz.step=8" href="#">Ďalej</a>
+                    </div>
+                  </div>
+
+                  <span x-text="$store.quiz.email" class="name"></span><span class="email">
+                    &lrm;&lt;gmail@google.support&gt;&lrm; </span><span class="to-me">pre mňa</span>
+
+                    <div class="email-dropdown-arrow" @click="openDetail=true">
+                      <div x-show="openDetail" @click.away="openDetail=false" class="modal" style="visibility: visible;">
+                        <div class="modal-flex">
+                          <div class="col-left">od:</div>
+                          <div class="col-right"><span x-text="$store.quiz.email"></span> &lrm;&lt;gmail@google.support&gt;&lrm;‎
+                          </div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">komu:</div>
+                          <div class="col-right" x-text="$store.quiz.email"></div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">dátum:</div>
+                          <div class="col-right" x-text="$store.quiz.now"></div>
+                        </div>
+  
+                        <div class="modal-flex">
+                          <div class="col-left">predmet:</div>
+                          <div class="col-right">Poslední upozornění</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    
+                </div>
+                <div class="time">2:20 AM</div>
+              </div>
+              
+            </div>
+          </div>
+
+          <div class="content">
+
+            <div>
+              Zdravím Vás!<br /><br />
+              Jak jste si možná všimli, poslal jsem vám e-mail z vašeho účtu. To znamená, že mám plný přístup k vaší schránce.<br />
+              Sleduji Vás už několik měsíců. Faktem je, že jste byli nakaženi prostřednictvím stránky pro dospělé, kterou jste navštívili.<br />
+              Pokud s tím nejste obeznámeni, vysvětlím to. Teď mám plný přístup a kontrolu k Vašemu účtu <br />
+              prostřednictvím vašeho zařízení nebo jiného zařízení připojeného ze stejné sítě. <br />
+              To znamená že vidím vše na vaší obrazovce, zapnu kameru a mikrofon, ale vy o tom nevíte.<br />
+              Mám také přístup ke všem vašim kontaktům a veškeré vaší korespondenci. Natočil jsem video,<br />
+              které ukazuje, jak se uspokojujete v levé polovině obrazovky a v pravé polovině vidím video které jste sledovali.<br />
+              Jediným kliknutím mohu toto video odeslat na všechny vaše e-maily a kontakty na sociálních sítích!<br />
+              Mohu také zveřejnit přístup ke veškeré vaší e-mailové korespondenci. Pokud tomu chcete zabránit,<br />
+              převědte částku 600 EUR na mou bitcoinovou adresu (pokud nevíte, jak to udělat, napište na Google: „Koupit bitcoin“).<br />
+
+              <p>
+                Moje bitcoinová adresa (peněženka BTC) je: eSjEtYhCaNeNdOvDoPeJoToT
+              </p>
+
+              Obdržení platby video odstraním a už o mě nikdy neuslyšíte. Dávám vám 24 hodin na zaplacení.<br />
+              Všiml jsem si taky přečtení tohoto dopisu a časovač bude fungovat, až budete číst tenhle email.<br />
+              Podat stížnost na policii nemá smysl, protože tento e-mail nelze sledovat podobně jako moji bitcoinovou adresu.<br />
+              Nedělám žádné chyby.<br /><br />
+              Zdravím a přeji hodně štěstí.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- !STEP-7 -->
+
+  <!-- STEP-8 -->
+  <script>
+    function step8() {
+      return {
+        showStatus1: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        chat: 0,
+        typing: false,
+        animationHasStarted: false,
+        nextExplanation(num) {
+          if (num >= this.explanation) {
+            this.explanation = num;
+          }
+        },
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+        async scroll() {
+          await sleep(1);
+          updateScroll("wa_chat1");
+        },
+        async animateChat() {
+          if (this.animationHasStarted) {
+            return;
+          }
+          // "Ahoj ano je na predaj"
+          this.animationHasStarted = true;
+          this.chat = 1;
+          this.scroll();
+
+          // "Mozete poslat do Muranu?"
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 2;
+          this.scroll();
+
+          // Me: "Jasne poslem dobierkou"
+          await sleep(1000);
+          this.chat = 3;
+          this.scroll();
+
+          // Seller: "Zaplatim cez bazarovu sluzbu"
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 4;
+          this.scroll();
+          
+          // Seller: "OK?"
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 5;
+          this.scroll();
+
+          // "Me: To este neviem.."
+          await sleep(1000);
+          this.chat = 6;
+          this.scroll();
+
+          // Seller: "platobna brana"
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 7;
+          this.scroll();
+
+          // Seller: "platobna brana"
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 8;
+          this.scroll();
+
+          // Seller: "platobna brana"
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 9;
+          this.scroll();
+
+          // "Me: Ako teraz nechapem"
+          await sleep(1000);
+          this.chat = 10;
+          this.scroll();
+
+          // "Me: Tak ako sa dohodneme"
+          await sleep(1000);
+          this.chat = 11;
+          this.scroll();
+
+          // Seller: "suglasite..."
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 12;
+          this.scroll();
+
+          // "Me: Ako s cim aby.."
+          await sleep(1000);
+          this.chat = 13;
+          this.scroll();
+
+          // "Me: S tym prevodom ci ako"
+          await sleep(1000);
+          this.chat = 14;
+          this.scroll();
+
+          // Seller: "Zaplatim..."
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 15;
+          this.scroll();
+
+          // Seller: "Prosim citajte"
+          await sleep(1000);
+          this.typing = true;
+          await sleep(1000);
+          this.typing = false;
+          this.chat = 16;
+          this.scroll();
+
+          // "Me: Pridem domov a pozriem sa na to"
+          await sleep(1000);
+          this.chat = 17;
+          this.scroll();
+          await sleep(1000);
+          this.scroll();
+          this.guideStep = 'question2';
+        }
+      }
+    }
+  </script>
+  <section id="step8" x-data="step8()" x-show="$store.quiz.step==8" class="gentle-flex container relative">
+    <div id="step-counter">
+      8/9
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Predaj na Bazos.sk</h2>
+        <p>Dal si inzerát na inzertný server. Na WhatsApp ti následne píše záujemca.</b></p>
+        <div>
+          <a class="response-button" @click="animateChat" href="#">Spustiť scenár</a>
+        </div>
+      </div>
+
+      <div x-show="guideStep=='question2'">
+        <h2>Predaj na Bazos.sk</h2>
+        <p>Potencionálny nákupca chce, aby si navštívil jeho stránku kvôli prevodu platby. Akú akciu zvolíš?</b></p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Kliknúť na užívateľov odkaz</a>
+          <a class="response-button" @click="answer('correct', true)" href="#">Neklikať</a>
+        </div>
+      </div>
+
+      <div x-show="guideStep=='correct'">
+        <h2>Správne - táto konverzácia je podvod.</h2>
+        <p>
+          Nikdy nezadávajte platobné údaje na stránku ktorú vám pošle niekto neznámy. Toto je príklad reálneho podvodu na serveri Bazoš.<br />
+          Útočník sa dokonca môže od vás neskôr pokúsiť získať aj potvrdzovaciu SMS (ak ju máte aktivovanú).
+        </p>
+        <div>
+          <a class="response-button" @click="$store.quiz.step=9" href="#">Ďalej</a>
+        </div>
+      </div>
+
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne - táto konverzácia je podvod.</h2>
+        <p>
+          Nikdy nezadávajte platobné údaje na stránku ktorú vám pošle niekto neznámy. Toto je príklad reálneho podvodu na serveri Bazoš.<br />
+          Útočník sa dokonca môže od vás neskôr pokúsiť získať aj potvrdzovaciu SMS (ak ju máte aktivovanú).
+        </p>
+        <div>
+          <a class="response-button" @click="$store.quiz.step=9" href="#">Ďalej</a>
+        </div>
+      </div>
+     
+    </div>
+    <div class="main-box">
+
+      <!-- Whatsapp -->
+      <div class="wa_page">
+        <div class="wa_marvel-device wa_nexus5">
+          <div class="wa_top-bar"></div>
+          <div class="wa_sleep"></div>
+          <div class="wa_volume"></div>
+          <div class="wa_camera"></div>
+          <div class="wa_screen">
+            <div class="wa_screen-container">
+              <div class="wa_status-bar">
+                <div class="wa_time"></div>
+                <div class="wa_battery">
+                  <i class="wa_zmdi wa_zmdi-battery"></i>
+                </div>
+                <div class="wa_network">
+                  <i class="wa_zmdi wa_zmdi-network"></i>
+                </div>
+                <div class="wa_wifi">
+                  <i class="wa_zmdi wa_zmdi-wifi-alt-2"></i>
+                </div>
+                <div class="wa_star">
+                  <i class="wa_zmdi wa_zmdi-star"></i>
+                </div>
+              </div>
+              <div class="wa_chat">
+                <div class="wa_chat-container">
+                  <div class="wa_user-bar">
+                    <div class="wa_back">
+                      <i class="wa_zmdi wa_zmdi-arrow-left"></i>
+                    </div>
+                    <div class="wa_avatar">
+                      <img src="https://avatars2.githubusercontent.com/u/398893?s=128" alt="Avatar">
+                    </div>
+                    <div class="wa_name">
+                      <span>+43 650 9571170</span>
+                      <span class="wa_status" x-text="typing ? 'typing...' : 'online'">online</span>
+                    </div>
+                    <div class="wa_actions wa_more">
+                      <i class="wa_zmdi wa_zmdi-more-vert"></i>
+                    </div>
+                    <div class="wa_actions wa_attachment">
+                      <i class="wa_zmdi wa_zmdi-attachment-alt"></i>
+                    </div>
+                    <div class="wa_actions">
+                      <i class="wa_zmdi wa_zmdi-phone"></i>
+                    </div>
+                  </div>
+
+                  <div class="wa_conversation">                    
+                    <div id="wa_chat1" class="wa_conversation-container" style="max-height: 350px;">
+                      <!-- <div class="message sent">
+                        What happened last night?
+                        <span class="metadata">
+                            <span class="time"></span><span class="tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div> -->
+                      <div class="wa_message wa_received">
+                        Ahoj
+                        <span class="wa_metadata"><span class="wa_time">18:00</span></span>
+                      </div>
+                      <div class="wa_message wa_received">
+                        Je ešte na predaj?
+                        <span class="wa_metadata"><span class="wa_time">18:00</span></span>
+                      </div>
+                      <div class="wa_message wa_received">
+                        <img src="img/bazos_produkt.png" width="200" />
+                        <span class="wa_metadata"><span class="wa_time"></span></span>
+                      </div>
+
+                      <div x-show="chat>=1"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        Ahoj ano je na predaj.
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:13</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+
+                      <div x-show="chat>=2"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        Môžete poslať do Muránu? Uhradím poštovné
+                        <span class="wa_metadata"><span class="wa_time">19:31</span></span>
+                      </div>
+
+                      <div x-show="chat>=3"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        Jasne pošlem dobierkou
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:31</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+
+                      <div x-show="chat>=4"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        Zaplatím cez bazárovú službu.
+                        <span class="wa_metadata"><span class="wa_time">19:31</span></span>
+                      </div>
+
+                      <div x-show="chat>=5"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        Ok?
+                        <span class="wa_metadata"><span class="wa_time">19:31</span></span>
+                      </div>
+
+                      <div x-show="chat>=6"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        To neviem ako som ešte neplatil<br />
+                        takto keby som to dal na dobierku?
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:32</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+
+                      <div x-show="chat>=7"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        <img src="img/platobna_brana.png" width="230" />
+                        <span class="wa_metadata"><span class="wa_time"></span></span>
+                      </div>
+
+                      <div x-show="chat>=8"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        Mám zlé skúsenosti s dobierkou
+                        <span class="wa_metadata"><span class="wa_time">13:39</span></span>
+                      </div>
+
+                      <div x-show="chat>=9"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        <img src="img/platobna_brana_reply.png" width="230" /><br />
+                        Peniaze dostanete vopred.
+                        <span class="wa_metadata"><span class="wa_time">19:39</span></span>
+                      </div>
+
+                      <div x-show="chat>=10"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        Ako nechápem teraz
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:39</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+
+                      <div x-show="chat>=11"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        Tak ako sa dohodneme
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:39</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+
+                      <div x-show="chat>=12"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        Súhlasíte alebo nie?
+                        <span class="wa_metadata"><span class="wa_time">19:40</span></span>
+                      </div>
+
+                      <div x-show="chat>=13"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        Ako s čím aby som vedel
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:40</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+
+                      <div x-show="chat>=14"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        S tým prevodom či ako
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:40</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+
+                      <div x-show="chat>=15"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        Zaplatím. Peniaze dostanete vopred na kartu.<br />
+                        Vyberte spôsob doručenia. Nie je to<br />
+                        ťažké.
+                        <span class="wa_metadata"><span class="wa_time">19:40</span></span>
+                      </div>
+
+                      <div x-show="chat>=16"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_received">
+                        <img src="img/platobna_brana_reply.png" width="230" /><br />
+                        Prosím čítajte
+                        <span class="wa_metadata"><span class="wa_time">19:40</span></span>
+                      </div>
+
+                      <div x-show="chat>=17"
+                        x-transition:enter="transition ease-out duration-500" 
+                        x-transition:enter-start="opacity-0 transform scale-90" 
+                        x-transition:enter-end="opacity-100 transform scale-100"
+                        class="wa_message wa_sent">
+                        Prídem domov a pozriem sa na to
+                        <span class="wa_metadata">
+                            <span class="wa_time">19:40</span><span class="wa_tick"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" id="msg-dblcheck-ack" x="2063" y="2076"><path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z" fill="#4fc3f7"/></svg></span>
+                        </span>
+                      </div>
+                     
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+  <!-- !STEP-8 -->
+
+  <!-- STEP-9 -->
+  <script>
+    function step9() {
+      return {
+        showStatus1: false,
+        openDetail: false,
+        guideStep: 'question',
+        explanation: 0,
+        chat: 0,
+        typing: false,
+        nextExplanation(num) {
+          if (num > this.explanation) {
+            this.explanation = num;
+          }
+        },
+        answer(guideStep, isCorrect) {
+          this.guideStep = guideStep;
+          this.$store.quiz.addResult({
+            clicked: guideStep,
+            isCorrect: isCorrect,
+          });
+        },
+      }
+    }
+  </script>
+  <section id="step9" x-data="step9()" x-show="$store.quiz.step==9" class="gentle-flex container relative">
+    <div id="step-counter">
+      9/9
+    </div>
+    <div class="intro">
+      <div x-show="guideStep=='question'">
+        <h2>Správa od spolužiaka</h2>
+        <p>Na WhatsApp ti prišla správa od spolužiaka Tomáša (máš ho v zozname kontaktov). <br />
+          Takúto správu si síce nečakal/nečakala, ale s Tomášom si si v minulosti už písal/písala. Čo urobíš?</p>
+        <div>
+          <a class="response-button" @click="answer('wrong', false)" href="#">Kliknem na odkaz</a>
+          <a class="response-button" @click="answer('correct', true)" href="#">Radšej ignorujem</a>
+        </div>
+      </div>
+
+      <div x-show="guideStep=='correct'">
+        <h2>Správne - toto je phishingová správa</h2>
+        <p>
+          Správne si odhadol že toto asi Tomáš nebude, vyzerá že jeho konto bolo napadnuté a teraz rozposiela phishingové správy.
+        </p>
+        <p>
+          Ak si si není istý, kontaktuj Tomáša ešte pomocou iného kanála.
+        </p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi čo sa môže ďalej stať</a>
+        </div>
+      </div>
+
+      <div x-show="guideStep=='wrong'">
+        <h2>Nesprávne - toto je phishingová správa</h2>
+        <p>
+          Tomášovi síce veríš, ale niekedy sa môže aj to že Tomášove konto je napadnuté a rozposiela ďalej phishingové správy. </p>
+        <p>
+          Preto ak si si není istý, kontaktuj Tomáša ešte pomocou iného kanála.
+        </p>
+        <div>
+          <a class="response-button" @click="nextExplanation(1)" href="#">Ukáž mi čo sa môže ďalej stať</a>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="main-box">
+      <!-- Whatsapp -->
+      <div x-show="explanation==0" class="wa_page">
+        <div class="wa_marvel-device wa_nexus5">
+          <div class="wa_top-bar"></div>
+          <div class="wa_sleep"></div>
+          <div class="wa_volume"></div>
+          <div class="wa_camera"></div>
+          <div class="wa_screen">
+            <div class="wa_screen-container">
+              <div class="wa_status-bar">
+                <div class="wa_time"></div>
+                <div class="wa_battery">
+                  <i class="wa_zmdi wa_zmdi-battery"></i>
+                </div>
+                <div class="wa_network">
+                  <i class="wa_zmdi wa_zmdi-network"></i>
+                </div>
+                <div class="wa_wifi">
+                  <i class="wa_zmdi wa_zmdi-wifi-alt-2"></i>
+                </div>
+                <div class="wa_star">
+                  <i class="wa_zmdi wa_zmdi-star"></i>
+                </div>
+              </div>
+              <div class="wa_chat">
+                <div class="wa_chat-container">
+                  <div class="wa_user-bar">
+                    <div class="wa_back">
+                      <i class="wa_zmdi wa_zmdi-arrow-left"></i>
+                    </div>
+                    <div class="wa_avatar">
+                      <img src="https://avatars2.githubusercontent.com/u/594614?s=128" alt="Avatar">
+                    </div>
+                    <div class="wa_name">
+                      <span>Tomáš</span>
+                      <span class="wa_status" x-text="typing ? 'typing...' : 'online'">online</span>
+                    </div>
+                    <div class="wa_actions wa_more">
+                      <i class="wa_zmdi wa_zmdi-more-vert"></i>
+                    </div>
+                    <div class="wa_actions wa_attachment">
+                      <i class="wa_zmdi wa_zmdi-attachment-alt"></i>
+                    </div>
+                    <div class="wa_actions">
+                      <i class="wa_zmdi wa_zmdi-phone"></i>
+                    </div>
+                  </div>
+
+                  <div class="wa_conversation">                    
+                    <div id="wa_chat1" class="wa_conversation-container" style="height: 200px;">
+                      <div class="wa_message wa_received">
+                        Vyzerá to ako ty 😮<br />
+                        <a href="#">https://3tb.eu/CK3la</a>
+                        <span class="wa_metadata"><span class="wa_time">13:00</span></span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div x-show="explanation>0" class="browser_fb" style="padding-bottom: 70px; position: relative;">
+        <img src="img/facebook.png" style="margin-top: 70px; display: inline-block; height: 100%;" />
+        <span class="url">n9yyl303.sibpages.com</span>
+
+        <div x-show="explanation==1" class="modal" style="margin-left: 0; margin-top: 2px; top: 60px; left: 0;">
+          <div>Po kliknutí na odkaz by ťa presmerovalo na takúto stránku</div>
+          <div class="tleft">
+            <a class="small-button" @click="nextExplanation(2)" href="#">Ďalej</a>
+          </div>
+        </div>
+
+        <div x-show="explanation==2" class="modal" style="margin: 0; top: 200px; left: 150px;">
+          <div>
+            Stránka sa tvári ako Facebook, ale v skutočnosti je to len návnada.<br />
+            Skutočná URL je <span class="u">n9yyl303.sibpages.com</span>.
+          </div>
+          <div class="tleft">
+            <a class="small-button" @click="nextExplanation(3)" href="#">Ďalej</a>
+          </div>
+        </div>
+
+        <div x-show="explanation==3" class="modal" style="margin: 0; top: 200px; left: 30px;">
+          <div>
+            Ak si to užívateľ nevšimne a v domnení že sa prihlasuje na Facebook zadá svoje údaje, môže prísť o svoje konto.
+          </div>
+          <div class="tright">
+            <a class="small-button" @click="$store.quiz.step+=1" href="#">Pokračovať v ďalšej otázke</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- !STEP-9 -->
+
+  <!-- STEP-10  -->
+  <script>
+    function step10() {
+      return {
+        sent: false,
+        send() {
+          if (this.sent) {
+            return;
+          }
+          console.log("odosielam");
+          this.sent=true;
+        }
+      }
+    }
+
+  </script>
+  <section x-data="step10()" 
+    x-show="$store.quiz.step == 10" 
+    id="step10" class="gentle-flex container relative">
+    </div>
+    <div class="intro-box" x-init="init()">
+      <h2 class="white">Dosiahol/dosiahla si <span class="b" x-text="$store.quiz.correctCount"></span><span class="b">/9 bodov</span>!</h2>
+      <p class="text-larger">
+        Vďaka za vyplnenie kvízu, dúfam že sa ti to páčilo.
+      </p>
+
+      <hr style="border-top: 1px solid rgb(238, 238, 238);"/>
+
+      <h2><i class="fa fa-heart-o" aria-hidden="true"></i> 
+        Malá prosba na záver</h2>
+      <p class="text-larger">
+        Tento kvíz vznikol ako súčasť záverečnej práce Miroslava Svítka pri študium DPŠ v Trnave. 
+        Veľmi by sa mi hodili Tvoje výsledky kvôli štatistike, preto by som ťa chcel poprosiť či by si mi ich poskytol/poskytla.
+      </p>
+      <p x-show="!sent" class="text-larger">
+        Ak súhlasíš, prosím klikni na tlačítko odoslať, ďakujem!
+      </p>
+      <div x-show="!sent" style="margin-top: 20px;">
+        <a class="response-button run-quiz-button" @click="send()" href="#">Odoslať výsledok</a>
+      </div>
+
+      <h1 x-show="sent" class="aqua">Ďakujem!</h1>
+    </div>
+  </section>
+  <!-- !STEP-10 -->
+
+  <section id="footer">
+    bezpecnost.click - Miroslav Svítok, 2021<br />
+  </section>
+
+  <!-- Script load & Store -->
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ryangjchandler/spruce@2.x.x/dist/spruce.umd.js"></script>
+  <script>
+    quizFinalResults = {};
+    Spruce.store('quiz', {
+      name: 'Miroslav Svitok',
+      email: 'mirosvitok@gmail.com',
+      step: 0,
+      now: (new Date()).toLocaleString(),
+      results: {},
+      correctCount: 0, // will be updated
+      addResult(stepResult) {
+        if (stepResult.isCorrect) {
+          this.correctCount += 1;
+        }
+        this.results["step" + this.step] = stepResult;
+      },
+    });
+    Spruce.watch('quiz.step', value => {
+      let quiz = Spruce.store('quiz');
+      window.quizFinalResults = {
+        name: quiz.name,
+        email: quiz.email,
+        results: JSON.parse(JSON.stringify(quiz.results)),
+      };
+    });
+
+    // https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep/39914235#39914235
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function updateScroll(elementId){
+        var element = document.getElementById(elementId);
+        element.scrollTop = element.scrollHeight;
+    }
+  </script>
+</body>
+
+</html>

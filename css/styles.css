@@ -1,0 +1,761 @@
+body {
+    background: linear-gradient(
+        180deg,
+        #25b67a 280px,
+        rgb(238, 238, 238) 280px
+    ) no-repeat center center fixed;
+
+    /* background: linear-gradient(
+        180deg,
+        #ffed4b 180px,
+        #fff 180px
+    ) no-repeat center center fixed; */
+
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.gentle-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 1ch; */
+}
+
+.container {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+.relative {
+    position: relative;
+}
+
+
+/* google-email */
+
+.circle.orange {
+    background-color: #fb8c00;
+}
+.circle.yellow {
+    background-color: #fbc02d;
+}
+
+.circle {
+    background-color: #9e9e9e;
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    font-size: 1.625rem;
+    font-weight: 300;
+    height: 2.875rem;
+    line-height: 2.875rem;
+    text-align: center;
+    width: 2.875rem;
+}
+
+.header {
+    min-height: 2.875rem;
+    position: relative;
+    white-space: nowrap;
+}
+
+.header-container::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.from-email-text {
+    display: inline-block;
+    padding-left: .75rem;
+    padding-top: 2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.from-email-text .name {
+    color: #212121;
+    font-weight: 500;
+}
+
+.from-email-text .email {
+    margin-left: .25rem;
+    font-size: .875rem;
+    opacity: .4;
+    position: relative;
+    /* display: none; */
+}
+
+
+.from-email-text .to-me::before {
+    content: "";
+    display: block;
+}
+
+.from-email-text .email-dropdown-arrow {
+    background: url("../img/skinnable_ltr_light_2x.png") no-repeat -60px -100px;
+        background-size: auto;
+    background-size: 180px auto;
+    cursor: pointer;
+    display: inline-block;
+    height: 12px;
+    margin: 0 0 2px .125rem;
+    padding: 0 0 1px 0;
+    vertical-align: bottom;
+    width: 12px;
+    /* position: relative; */
+}
+
+
+.from-email-text .details-link {
+    color: #448aff;
+    cursor: pointer;
+    font-size: .875rem;
+    display: none;
+    font-weight: 300;
+    margin-left: .3125rem;
+    margin-top: .1875rem;
+}
+
+.time {
+    float: right;
+    font-size: .875rem;
+    margin-top: .9375rem;
+    opacity: .4;
+}
+
+.email-header {
+    margin-bottom: 20px;
+}
+
+.content-grey {
+    background-color: #f5f5f5;
+}
+
+.content {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    letter-spacing: normal;
+    font-size: 1rem;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px 0;
+}
+
+.card {
+    background-color: #fff;
+    min-height: 300px;
+    margin: 0 auto;
+    max-width: 670px;
+    width: 90%;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+}
+
+.email-content {
+    padding: 30px;
+}
+
+.email-content .line-1 {
+    display: block;
+    font-size: 16px;
+    line-height: 1.45em;
+    font-weight: 300;
+    color: #424242;
+}
+
+.email-content .doc-name::before {
+    content: "";
+    width: 18px;
+    height: 24px;
+    display: inline-block;
+    margin-right: 10px;
+    transform: translate(0, 3px);
+    background-image: url(../img/doc-icon.png);
+    background-size: 100% auto;
+}
+
+.email-content .doc-name {
+    display: inline-block;
+    font-size: 21px;
+    line-height: 1.45em;
+    color: #448aff;
+    font-weight: 300;
+    margin: 8px 0;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.status {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    line-height: 1rem;
+    background-color: #555;
+    color: #f0f0f0;
+    text-align: left;
+    font: initial;
+    text-transform: none;
+    font-weight: 200;
+    font-size: .9rem;
+    font-family: Roboto,Arial,sans-serif;
+    border-width: 1px;
+    border-color: #fff;
+    border-style: solid;
+    padding: .25rem .5rem;
+    letter-spacing: initial;
+    box-sizing: border-box;
+    min-width: 50%;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    z-index: 1;
+}
+
+.email-content .message-container {
+    margin-bottom: 25px;
+}
+
+.email-content .message-container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.email-content .user-icon {
+    width: 45px;
+    height: 45px;
+    background-color: #92addc;
+    float: left;
+    background-image: url(../img/user-icon.png);
+    background-size: 100% auto;
+}
+
+.email-content .message {
+    padding-left: 20px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #424242;
+    width: calc(100% - 65px);
+    display: block;
+    float: left;
+    letter-spacing: .025em;
+    line-height: 1.35em;
+    margin-top: -2px;
+}
+
+.drive-button {
+    clear: both;
+    background-color: #4d90fe;
+    border: 1px solid #3079ed;
+    border-radius: 2px;
+    color: #fff;
+    display: inline-block;
+    font-family: Roboto,Arial,Helvetica,sans-serif;
+    line-height: 29px;
+    min-width: 54px;
+    outline: 0px;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 2px 12px;
+    letter-spacing: .05em;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* /google-email */
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0 25px;
+    clear: both;
+}
+
+.modal {
+    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+    position: absolute;
+    margin-top: 24px;
+    margin-left: -40px;
+    padding: 12px;
+    box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.4);
+    background: #fff;
+    z-index: 999;
+    white-space: normal;
+}
+
+.modal-flex {
+    display: flex;
+}
+
+.col-left {
+    width: 80px;
+    margin: 2px 6px;
+    text-align: right;
+    opacity: 0.4;
+}
+
+.col-right {
+    flex-grow: 1;
+    margin: 2px 6px;
+}
+
+
+.intro {
+    text-align: center;
+}
+
+.intro h2 {
+    color: #fff;
+    font-size: 2em;
+    font-weight: 300;
+    /* font-family: 'Roboto', sans-serif; */
+}
+
+.intro p {
+    font-size: 16px;
+}
+
+#step-counter {
+    color: #fff;
+    font-size: 16px;
+    padding: 4px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.main-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 3px;
+    margin-top: 20px;
+}
+
+input.basic-input {
+    height: 30px;
+    width: 400px;
+    display: block;
+    font-size: 20px;
+}
+
+.basic-label {
+    display: block;
+}
+
+.basic-button {
+    width: 410px;
+    height: 40px;
+}
+
+.response-button {
+    display: inline-block;
+
+    padding: 6px;
+    vertical-align: baseline;
+    text-align: center;
+    border-radius: 4px;
+    color: black;
+    margin: 0px 2px;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    letter-spacing: normal;
+    padding: 1.15rem 4.5rem;
+    overflow: visible;
+    background-color: aquamarine;
+}
+
+.response-button:hover {
+    background-color: rgb(47, 252, 183);
+}
+
+.tleft {
+    text-align: left;
+}
+
+.tright {
+    text-align: right;
+}
+
+.small-button {
+    display: inline-block;
+    vertical-align: baseline;
+    text-align: center;
+    border-radius: 4px;
+    color:#fff;
+    text-decoration: none;
+    white-space: nowrap;
+    margin-left: auto;
+    cursor: pointer;
+    letter-spacing: normal;
+    padding: 0.5rem 1rem;
+    overflow: visible;
+    background-color: #25b67a;
+    margin-top: 10px;
+}
+
+.small-button:hover {
+    background-color: #1f9262;
+}
+
+.fake-link {
+    color: #0000EE; 
+    text-decoration: underline; 
+    cursor: pointer;
+}
+
+.fake-link:active {
+    color: #FF0000;
+}
+
+.fake-link:visited {
+    color: #551A8B 
+}
+
+/* STEP-0 */
+#step0 {
+    width: 990px;
+    /* display: none; */
+}
+#step0 .main-box {
+    /* width: 500px; */
+}
+
+/* STEP-1 */
+#step1 {
+    width: 990px;
+}
+
+#step1 .main-box {
+    width: 980px;
+}
+
+/* STEP-2 */
+#step2 {
+    width: 970px;
+}
+
+#step2 .main-box {
+    width: 960px;
+}
+
+/* STEP-3 */
+#step3 {
+    width: 950px;
+}
+
+#step3 .main-box {
+    width: 940px;
+}
+
+#step3 .message {
+    font-size: 15px;
+    font-weight: 300;
+    color: #616161;
+    display: block;
+    letter-spacing: .025em;
+    line-height: 1.6em;
+    margin-bottom: 15px;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+    margin: 0px 40px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+#step3 .dropbox-icon {
+    width: 40px;
+    height: 40px;
+    display: block;
+    margin: 0 auto 15px;
+    background-image: url(../img/dropbox-icon.png);
+    background-size: 85% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#step3 .button-container {
+    text-align: center;
+    margin: 25px 0;
+}
+
+#step3 .dropbox-button {
+    clear: both;
+    background-color: #007ee6;
+    border: 1px solid #3079ed;
+    border-radius: 2px;
+    color: #fff !important;
+    display: inline-block;
+    font-family: Roboto,Arial,Helvetica,sans-serif;
+    line-height: 29px;
+    min-width: 54px;
+    outline: 0px;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 6px 12px;
+    letter-spacing: .05em;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* STEP-4 */
+#step4 {
+    width: 950px;
+}
+
+#step4 .main-box {
+    width: 940px;
+}
+
+#step4 .question-mark {
+    display: inline-block;
+    height: 2.875rem;
+    width: 2.875rem;
+    background-image: url(../img/question-icon.png);
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+
+#step4 .hover-box {
+    display: none;
+    position: absolute;
+    bottom: -30px;
+    left: -200px;
+    color: #fff;
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+    
+#step4 .question-mark:hover + .hover-box {
+    display: block;
+}
+
+#step4 .attachment {
+    cursor: pointer;
+    width: 180px;
+    height: 120px;
+    border: 1px solid #eee;
+    border-radius: 2px;
+    position: relative;
+}
+
+#step4 .attachment-default, #step4 .attachment-hover {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#step4 .attachment-footer {
+    width: 100%;
+    height: 35px;
+    position: absolute;
+    bottom: 0;
+    background-color: #fafafa;
+    border-top: 1px solid #eee;
+}
+
+#step4 .pdf-icon {
+    width: 16px;
+    height: 16px;
+    background-color: #f94e39;
+    margin-top: 9px;
+    margin-left: 10px;
+    background-image: url(../img/pdf-icon.png);
+    background-repeat: no-repeat;
+    overflow: hidden;
+    text-indent: -999px;
+    display: inline-block;
+    float: left;
+}
+
+#step4 .file-name {
+    margin-top: 11px;
+    padding-left: 0px;
+    margin-left: 10px;
+    font-size: 13px;
+    float: left;
+}
+
+#step4 .attachment-hover {
+    background-color: #fafafa;
+    display: none;
+}
+
+#step4 .attachment::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    width: 40px;
+    height: 20px;
+    background-image: url(../img/attachment-fold.png);
+    background-size: 100% auto;
+    z-index: 1;
+}
+
+#step4 .file-name {
+    margin-top: 11px;
+    padding-left: 0px;
+    margin-left: 10px;
+    font-size: 13px;
+    float: left;
+}
+
+#step4 .file-size {
+    font-size: 12px;
+    opacity: .5;
+    display: block;
+    clear: both;
+    padding-top: 8px;
+    margin-left: 35px;
+}
+
+#step4 .attachment:hover .attachment-hover {
+    display: block;
+}
+
+#step4 .attachment:hover .attachment-default {
+    display: none;
+}
+
+/* STEP-5 */
+#step5 {
+    width: 950px;
+}
+
+#step5 .main-box {
+    width: 940px;
+}
+
+.circle.green {
+    background-color: #4caf50;
+}
+
+#step5 .email-header {
+    background-color: #d32f2f;
+    padding: 80px 30px 20px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 100;
+    margin-bottom: 0;
+}
+
+#step5 .email-body {
+    margin-top: 0px;
+    background-color: #f5f5f5;
+    padding: 20px 30px;
+    line-height: 1.5em;
+}
+
+#step5 p:first-child {
+    margin-top: 0;
+}
+
+#step5 .message-text, #step5 .footer-text {
+    white-space: pre-wrap;
+}
+
+#step5 .info {
+    padding-left: 25px;
+    line-height: 1.4em;
+}
+
+#step5 .info span:first-child {
+    font-size: 16px;
+    opacity: 1;
+}
+
+#step5 .info span {
+    font-size: 14px;
+    opacity: .6;
+    display: block;
+}
+
+#step5 .content {
+    background-color: #fff;
+    min-height: 100px;
+    color: #424242;
+    font-weight: 400;
+}
+
+#step5 .content p {
+    font-size: 14px;
+    margin: 2em 0;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+#step5 .change-password-button {
+    clear: both;
+    background-color: #2979ff;
+    border: 1px solid #2962ff;
+    border-radius: 2px;
+    color: #fff !important;
+    display: inline-block;
+    line-height: 29px;
+    min-width: 54px;
+    outline: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 6px 12px;
+    letter-spacing: .05em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+/* STEP-6 */
+#step6 {
+    width: 950px;
+}
+
+#step6 .main-box {
+    width: 940px;
+}
+
+#step6 .email-body {
+    background-color: #f5f5f5;
+    padding: 20px 30px 30px;
+    line-height: 1.3em;
+}
+
+#step6 .flag {
+    width: 80px;
+    height: 84px;
+    display: block;
+    margin: 20px 0;
+    background-image: url(../img/attack-shield.png);
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: hidden;
+    text-indent: -999px;
+}
+
+#step6 .email-headline {
+    font-size: 20px;
+    line-height: 1.3em;
+    font-weight: 400;
+}
+
+#step6 .email-body p {    
+    font-size: 14px;
+    margin: 2em 0;
+}
+
+.material-fake-link {
+    color: #448aff;; 
+    text-decoration: none; 
+    cursor: pointer;
+}
